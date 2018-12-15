@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.tasks.run.BootRun
 
 plugins {
@@ -52,6 +53,25 @@ subprojects {
 
     tasks.getByName<BootRun>("bootRun") {
         sourceResources(sourceSets.main.get())
+    }
+
+    if (isKotlinProject()) {
+        val javaVersion4Kotlin = "1.8"
+        tasks.getByName<KotlinCompile>("compileKotlin") {
+            kotlinOptions.jvmTarget = javaVersion4Kotlin
+        }
+        tasks.getByName<KotlinCompile>("compileTestKotlin") {
+            kotlinOptions.jvmTarget = javaVersion4Kotlin
+        }
+    }
+    val javaVersion = JavaVersion.VERSION_11.toString()
+    tasks.getByName<JavaCompile>("compileJava") {
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
+    }
+    tasks.getByName<JavaCompile>("compileTestJava") {
+        sourceCompatibility = javaVersion
+        targetCompatibility = javaVersion
     }
 }
 
